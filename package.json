@@ -1,0 +1,22 @@
+{
+  "name": "node-express-trial",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/dadayama/node-trial.git"
+  },
+  "author": "dadayama",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dadayama/node-trial/issues"
+  },
+  "homepage": "https://github.com/dadayama/node-trial#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
