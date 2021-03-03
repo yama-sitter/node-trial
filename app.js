@@ -1,18 +1,10 @@
 const express = require('express');
-
 const app = express();
 
-// ***** ルーティング *****
-// app.use(require('./logger.js'));
-// app.use('/users', require('./router/user.js'));
+app.set('view engine', 'pug')
 
-// ***** テンプレートエンジン ****
-// app.set('view engine', 'pug');
-// app.get('/', (req, res) => {
-//   res.status(200).render('index', { title: 'Webアプリケーション開発' });
-// })
-
-// ***** 静的ファイルの配信 *****
-app.use('/public', express.static(`${__dirname}/public`))
+const nodeModuleDir = `${__dirname}/node_modules`;
+app.use('/assets', express.static(`${nodeModuleDir}/bootstrap/dist`));
+app.use('/', require('./routes/index'));
 
 app.listen(3000);
