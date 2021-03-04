@@ -1,10 +1,18 @@
 const express = require('express');
 const app = express();
 
-app.set('view engine', 'pug')
-
-const nodeModuleDir = `${__dirname}/node_modules`;
-app.use('/assets', express.static(`${nodeModuleDir}/bootstrap/dist`));
-app.use('/', require('./routes/index'));
+app.all('/', (req, res) => {
+  let body = '';
+  console.log(req.method);
+  console.log(req.url);
+  console.log(JSON.stringify(req.headers));
+  req.on('data', (chunk) => {
+    body += chunk;
+  });
+  req.on('end', () => {
+    console.log(body);
+  });
+  res.send('OK');
+});
 
 app.listen(3000);
