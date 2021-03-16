@@ -102,3 +102,6 @@ dist
 
 # TernJS port file
 .tern-port
+
+public/development/third-party/*
+public/production/third-party/*
