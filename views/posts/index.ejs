@@ -17,7 +17,7 @@
       href="https://getbootstrap.jp/docs/5.0/examples/starter-template/"
     />
 
-    <%- include('./_share/stylesheets.ejs') %>
+    <%- include('../_share/stylesheets.ejs') %>
 
     <!-- Bootstrap core CSS -->
     <link
@@ -82,19 +82,24 @@
     />
   </head>
   <body>
-    <%- include('./_share/navbar.ejs') %>
+    <%- include('../_share/navbar.ejs') %>
 
     <main class="container">
       <div class="starter-template py-5 px-3">
-        <h1>ようこそ Node.js + Express の世界へ</h1>
-        <p class="lead">
-          このドキュメントを使ってあらゆるプロジェクトを高速にスタートしましょう。<br />
-          このテキストと基礎となる HTML ドキュメントが手に入ります。
-        </p>
+        <h1><%= title %></h1>
+        <dl class="row mt-5 mb-5">
+          <dt class="col-3">公開日：</dt>
+          <dd class="col-9"><%= published.toLocaleString() %></dd>
+          <dt class="col-3">著者：</dt>
+          <dd class="col-9"><%= authors %></dd>
+          <dt class="col-3">キーワード：</dt>
+          <dd class="col-9"><%= keywords %></dd>
+        </dl>
+        <p class="lead"><%= content %></p>
       </div>
     </main>
     <!-- /.container -->
 
-    <%- include('./_share/javascripts.ejs') %>
+    <%- include('../_share/javascripts.ejs') %>
   </body>
 </html>
