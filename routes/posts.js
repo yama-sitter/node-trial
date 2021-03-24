@@ -1,6 +1,6 @@
-const { CONNECTION_URL, DATABASE, OPTIONS } = require('../config/mongodb.config.js');
 const router = require('express').Router();
 const { MongoClient } = require('mongodb');
+const { CONNECTION_URL, DATABASE, OPTIONS } = require('../config/mongodb.config.js');
 
 router.get('/*', (req, res) => {
   MongoClient.connect(CONNECTION_URL, OPTIONS, async (error, client) => {
