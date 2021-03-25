@@ -1,4 +1,5 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const systemlogger = require('./lib/log/systemlogger.js');
 const accesslogger = require('./lib/log/accesslogger.js');
 
@@ -10,6 +11,9 @@ const staticFilePath = process.env.NODE_ENV === 'development' ? 'development' : 
 app.use('/public', express.static(`./public/${staticFilePath}`));
 
 app.use(accesslogger());
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 app.use('/', require('./routes/index.js'));
 app.use('/posts', require('./routes/posts.js'));
