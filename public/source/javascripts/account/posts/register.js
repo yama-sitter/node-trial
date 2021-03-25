@@ -5,5 +5,7 @@ $(() => {
     $form.attr('method', $submitBtn.data('method'));
     $form.attr('action', $submitBtn.data('action'));
     $form.trigger('submit');
+    $submitBtn.off().prop('disabled', true);
+    $form.on('submit', false);
   });
 });
