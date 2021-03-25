@@ -86,13 +86,17 @@ router.post('/posts/register/execute', (req, res) => {
       delete req.session._csrf;
       res.clearCookie('_csrf');
 
-      res.render('./account/posts/register-complete.ejs');
+      res.redirect('/account/posts/register/complete');
     } catch (_error) {
       console.log(_error);
     } finally {
       client.close();
     }
   });
+});
+
+router.get('/posts/register/complete', (req, res) => {
+  res.render('./account/posts/register-complete.ejs');
 });
 
 module.exports = router;
