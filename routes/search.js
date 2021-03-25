@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const { MongoClient } = require('mongodb');
 const { CONNECTION_URL, DATABASE, OPTIONS } = require('../config/mongodb.config.js');
-const { MAX_ITEM_PER_PAGE } = require('../config/app.config.js');
+const { MAX_ITEM_PER_PAGE } = require('../config/app.config.js').search;
 
 router.get('/*', (req, res) => {
   const page = req.query.page ? parseInt(req.query.page, 10) : 1;

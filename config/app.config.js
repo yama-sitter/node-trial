@@ -1,3 +1,5 @@
 module.exports = {
-  MAX_ITEM_PER_PAGE: 1,
+  search: {
+    MAX_ITEM_PER_PAGE: 1,
+  },
 };
