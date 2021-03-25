@@ -51,4 +51,27 @@ router.post('/posts/register/confirm', (req, res) => {
   res.render('./account/posts/register-confirm.ejs', { origin });
 });
 
+router.post('/posts/register/execute', (req, res) => {
+  const origin = createRegisterData(req.body);
+  const errors = validateRegisterData(req.body);
+
+  if (errors) {
+    res.render('./account/posts/register-form.ejs', { errors, origin });
+    return;
+  }
+
+  MongoClient.connect(CONNECTION_URL, OPTIONS, async (error, client) => {
+    const db = client.db(DATABASE);
+
+    try {
+      await db.collection('posts').insertOne(origin);
+      res.render('./account/posts/register-complete.ejs');
+    } catch (_error) {
+      console.log(error);
+    } finally {
+      client.close();
+    }
+  });
+});
+
 module.exports = router;
