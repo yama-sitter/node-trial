@@ -1,7 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
 const systemlogger = require('./lib/log/systemlogger.js');
 const accesslogger = require('./lib/log/accesslogger.js');
+const { SESSION_SECRET } = require('./config/app.config.js').security;
 
 const app = express();
 app.set('view engine', 'ejs');
@@ -11,6 +14,14 @@ const staticFilePath = process.env.NODE_ENV === 'development' ? 'development' : 
 app.use('/public', express.static(`./public/${staticFilePath}`));
 
 app.use(accesslogger());
+
+app.use(cookieParser());
+app.use(session({
+  secret: SESSION_SECRET,
+  resave: false,
+  saveUninitialized: true,
+  name: 'sid',
+}));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
