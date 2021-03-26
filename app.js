@@ -2,6 +2,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
+const flash = require('connect-flash');
+
+const { initialize } = require('./lib/security/accountcontrol.js');
 const systemlogger = require('./lib/log/systemlogger.js');
 const accesslogger = require('./lib/log/accesslogger.js');
 const { SESSION_SECRET } = require('./config/app.config.js').security;
@@ -25,6 +28,8 @@ app.use(session({
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(flash());
+app.use(...initialize());
 
 app.use('/', require('./routes/index.js'));
 app.use('/posts', require('./routes/posts.js'));
