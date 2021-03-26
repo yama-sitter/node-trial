@@ -2,7 +2,7 @@
 const router = require('express').Router();
 const { MongoClient } = require('mongodb');
 const Csrf = require('csrf');
-const { authenticate } = require('../lib/security/accountcontrol.js');
+const { authenticate, authorize } = require('../lib/security/accountcontrol.js');
 const { CONNECTION_URL, DATABASE, OPTIONS } = require('../config/mongodb.config.js');
 
 const tokens = new Csrf();
@@ -34,13 +34,7 @@ const createRegisterData = (body) => {
   };
 };
 
-router.get('/', (req, res, next) => {
-  if (req.isAuthenticated()) {
-    next();
-  } else {
-    res.redirect('/account/login');
-  }
-}, (req, res) => {
+router.get('/', authorize('readWrite'), (req, res) => {
   res.render('./account/index.ejs');
 });
 
@@ -50,7 +44,7 @@ router.get('/login', (req, res) => {
 
 router.post('/login', authenticate());
 
-router.get('/posts/register', (req, res) => {
+router.get('/posts/register', authorize('readWrite'), (req, res) => {
   const secret = tokens.secretSync();
   const token = tokens.create(secret);
   req.session._csrf = secret;
@@ -58,12 +52,12 @@ router.get('/posts/register', (req, res) => {
   res.render('./account/posts/register-form.ejs');
 });
 
-router.post('/posts/register/input', (req, res) => {
+router.post('/posts/register/input', authorize('readWrite'), (req, res) => {
   const origin = createRegisterData(req.body);
   res.render('./account/posts/register-form.ejs', { origin });
 });
 
-router.post('/posts/register/confirm', (req, res) => {
+router.post('/posts/register/confirm', authorize('readWrite'), (req, res) => {
   const origin = createRegisterData(req.body);
   const errors = validateRegisterData(req.body);
 
@@ -74,7 +68,7 @@ router.post('/posts/register/confirm', (req, res) => {
   res.render('./account/posts/register-confirm.ejs', { origin });
 });
 
-router.post('/posts/register/execute', (req, res) => {
+router.post('/posts/register/execute', authorize('readWrite'), (req, res) => {
   const secret = req.session._csrf;
   const token = req.cookies._csrf;
 
@@ -100,15 +94,13 @@ router.post('/posts/register/execute', (req, res) => {
       res.clearCookie('_csrf');
 
       res.redirect('/account/posts/register/complete');
-    } catch (_error) {
-      console.log(_error);
     } finally {
       client.close();
     }
   });
 });
 
-router.get('/posts/register/complete', (req, res) => {
+router.get('/posts/register/complete', authorize('readWrite'), (req, res) => {
   res.render('./account/posts/register-complete.ejs');
 });
 
