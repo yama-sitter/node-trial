@@ -4,5 +4,7 @@ module.exports = {
   },
   security: {
     SESSION_SECRET: 'SESSION-SECRET-STRING',
+    PASSWORD_SALT: 'PASSWORD-SALT',
+    PASSWORD_STRETCH: 3,
   },
 };
