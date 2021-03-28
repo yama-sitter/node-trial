@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
@@ -49,6 +50,46 @@ app.use('/', (() => {
   router.use('/', require('./routes/index.js'));
   return router;
 })());
+
 app.use(systemlogger());
+
+app.use((req, res) => {
+  const data = {
+    method: req.method,
+    protocol: req.protocol,
+    version: req.httpVersion,
+    url: req.url,
+  };
+
+  res.status(404);
+  if (req.xhr) {
+    res.json(data);
+  } else {
+    res.render('./404.ejs', { data });
+  }
+});
+
+app.use((err, req, res, next) => {
+  const isDevelopment = process.env.NODE_ENV === 'development';
+  const data = {
+    method: req.method,
+    protocol: req.protocol,
+    version: req.httpVersion,
+    url: req.url,
+    isDevelopment,
+    error: isDevelopment ? {
+      name: err.name,
+      message: err.message,
+      stack: err.stack,
+    } : null,
+  };
+
+  res.status(500);
+  if (req.xhr) {
+    res.json(data);
+  } else {
+    res.render('./500.ejs', { data });
+  }
+});
 
 app.listen(3000);
